@@ -1,0 +1,13 @@
+:host {
+    display: flex;
+    flex-direction: column;
+}
+
+.img-container {
+    display: flex;
+    position: relative
+}
+
+.img-container * {
+    flex: 1
+}

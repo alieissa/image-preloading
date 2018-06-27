@@ -1,17 +1,5 @@
 <header>
   <ls-header></ls-header>
 </header>
-<main class="container">
-  <div class="columns is-multiline">
-    <!-- <div class="column is-half-tablet is-one-third-desktop" *ngFor="let item of items">
-      <ls-card [item]="item"></ls-card>
-    </div> -->
 
-    <div class="column is-half" *ngFor="let img of images">
-      <ls-hd-img 
-        [src]="'./assets/images/' + img.src"
-        [placeholder]="'./assets/images/' + img.placeholder">
-      </ls-hd-img>
-    </div>
-  </div>
-</main>
+<router-outlet></router-outlet>

@@ -1,0 +1,10 @@
+<main class="container">
+  <div class="columns is-multiline">
+    <div class="column is-half" *ngFor="let img of images">
+      <ls-hd-img 
+        [src]="'./assets/images/' + img.src"
+        [placeholder]="'./assets/images/' + img.placeholder">
+      </ls-hd-img>
+    </div>
+  </div>
+</main>

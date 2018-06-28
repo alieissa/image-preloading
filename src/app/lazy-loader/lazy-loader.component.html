@@ -1,0 +1,11 @@
+<main class="container">
+  <div class="columns is-multiline" #container>
+      <div id="initImage" class="column is-three-quarters"></div>
+    
+    <div class="column is-three-quarters" *ngFor="let img of images; let i = index" data-lazy-container [attr.data-src]="img.src">
+      <!-- <img data-src="'./assets/images/' + img.src" />       -->
+    </div>
+      <!-- <img *ngIf="i===0" [src]="'./assets/images/' + img.src" alt=""> -->
+      <!-- <img data-src="'./assets/images/' + img.src" /> -->
+  </div>
+</main>

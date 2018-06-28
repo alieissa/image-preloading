@@ -11,6 +11,7 @@ import {
   CardComponent,
   HdImageComponent
 } from './__shared/components';
+import { LazyLoaderComponent } from './lazy-loader/lazy-loader.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {
     CardComponent,
     HeaderComponent,
     HdImageComponent,
-    ProgressiveLoaderComponent
+    ProgressiveLoaderComponent,
+    LazyLoaderComponent
   ],
   imports: [
     BrowserModule,

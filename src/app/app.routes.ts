@@ -1,7 +1,7 @@
 import { Route } from '@angular/router';
 
 import { ProgressiveLoaderComponent } from './progressive-loader/progressive-loader.component'
-
+import { LazyLoaderComponent } from './lazy-loader/lazy-loader.component';
 export const APP_ROUTES: Route[] = [
     {
         path: '',
@@ -11,5 +11,9 @@ export const APP_ROUTES: Route[] = [
     {
         path: 'progressive',
         component: ProgressiveLoaderComponent,
+    },
+    {
+        path: 'lazy',
+        component: LazyLoaderComponent
     }
 ]

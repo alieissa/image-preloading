@@ -1,5 +1,11 @@
-import { Component, OnInit, AfterViewInit, AfterViewChecked } from '@angular/core';
-import { ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  AfterViewInit,
+  ViewChild, 
+  ElementRef
+} from '@angular/core';
+
 import * as _ from 'lodash';
 
 @Component({
@@ -34,44 +40,72 @@ export class LazyLoaderComponent implements OnInit, AfterViewInit {
     }
   ];
   
+  lazyContainers: any[];
+
   constructor() { }
 
   ngOnInit() {}
 
   ngAfterViewInit() {
-    let lazyContainers = this.container.nativeElement.querySelectorAll('[data-lazy-container]');
-    lazyContainers = [].slice.call(lazyContainers);
+    // Get lazy load img containers
+    this.lazyContainers = this.view().containers();
+    
+    // Register scroll event. Lazy load img that come into view
+    this.view().scrollAdd(() => this.load(this.lazyContainers[0]));
 
+    // Initial lazy load. This is needed
+    // in case there are elements that are visibile
+    // prior to scroll event triggers;
+    this.load(this.lazyContainers[0]);
+  }
 
-    const isInViewport = (container: HTMLBaseElement) => {
-      const isInView = container.getBoundingClientRect().top <= window.innerHeight && container.getBoundingClientRect().bottom >= 0
-      return isInView;
-    }
-
-    const lazyLoad = (container) => {
-        console.log('container', container)
-        if(lazyContainers.length === 0) {
-          return;
+  // Handle all view operations
+  view() {
+    let scrollEvent: any;
+    return {
+      update: (img, container) => {
+        container.appendChild(img);
+        container.removeAttribute('data-lazy-container');
+        return this.lazyContainers.filter(_container => _container !== container);
+      },
+      containers: () => {
+        let lazyContainers = this.container.nativeElement.querySelectorAll('[data-lazy-container]');
+        return [].slice.call(lazyContainers);
+      },
+      scrollAdd: onScrollHandler => {
+        scrollEvent = document.addEventListener('scroll', _.debounce(onScrollHandler, 250));
+        return scrollEvent;
+      },
+      scrollRemove: () => {
+        return document.removeEventListener('scroll', scrollEvent);
+      },
+      isInViewport: container => {
+        if(!container) {
+          return false;
         }
 
-        if(isInViewport(container)) {
-          const img = new Image();
-          img.src = `./assets/images/${container.dataset.src}`;
-          img.onload = () => {
-            container.appendChild(img);
-            container.removeAttribute('data-lazy-container')          
-            lazyContainers = lazyContainers.filter(_container => _container !== container)
-            lazyLoad(lazyContainers[0])
-          }
-        }
-    }
-
-    document.addEventListener('scroll', _.debounce(() => {
-      if(lazyContainers.length) {
-        lazyLoad(lazyContainers[0])
+        const top = container.getBoundingClientRect().top;
+        const bottom = container.getBoundingClientRect().bottom;
+        return top <= window.innerHeight && bottom >= 0
       }
-    }, 250));
+    }; 
+  }
 
-    lazyLoad(lazyContainers[0]);
+  // Lazy load images
+  load(container) {
+    if(this.lazyContainers.length === 0) {
+      this.view().scrollRemove()
+    }
+
+    if(!this.view().isInViewport(container)) {
+      return;
+    }
+
+    const img = new Image();
+    img.src = `./assets/images/${container.dataset.src}`;
+    img.onload = () => {
+      this.lazyContainers = this.view().update(img, container);      
+      this.load(this.lazyContainers[0]);
+    };
   }
 }

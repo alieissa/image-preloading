@@ -1,5 +1,7 @@
 import { Component, OnInit, AfterViewInit, AfterViewChecked } from '@angular/core';
 import { ViewChild, ElementRef } from '@angular/core';
+import * as _ from 'lodash';
+
 @Component({
   selector: 'ls-lazy-loader',
   templateUrl: './lazy-loader.component.html',
@@ -34,18 +36,19 @@ export class LazyLoaderComponent implements OnInit, AfterViewInit {
   
   constructor() { }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   ngAfterViewInit() {
     let lazyContainers = this.container.nativeElement.querySelectorAll('[data-lazy-container]');
     lazyContainers = [].slice.call(lazyContainers);
+
 
     const isInViewport = (container: HTMLBaseElement) => {
       const isInView = container.getBoundingClientRect().top <= window.innerHeight && container.getBoundingClientRect().bottom >= 0
       return isInView;
     }
 
-    const initLoad = (container) => {
+    const lazyLoad = (container) => {
         console.log('container', container)
         if(lazyContainers.length === 0) {
           return;
@@ -58,11 +61,17 @@ export class LazyLoaderComponent implements OnInit, AfterViewInit {
             container.appendChild(img);
             container.removeAttribute('data-lazy-container')          
             lazyContainers = lazyContainers.filter(_container => _container !== container)
-            initLoad(lazyContainers[0])
+            lazyLoad(lazyContainers[0])
           }
         }
     }
 
-    initLoad(lazyContainers[0]);
+    document.addEventListener('scroll', _.debounce(() => {
+      if(lazyContainers.length) {
+        lazyLoad(lazyContainers[0])
+      }
+    }, 250));
+
+    lazyLoad(lazyContainers[0]);
   }
 }

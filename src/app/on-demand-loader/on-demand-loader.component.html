@@ -1,0 +1,23 @@
+<main class="container">
+  <div class="columns is-multiline is-centered" #container>
+      <div class="column is-three-quarters">
+      <img [src]="images[0].src" alt="Image not found">    
+  </div>
+  
+  <div class="column is-three-quarters">
+    <img [src]="images[1].src" alt="Image not found">    
+  </div>
+
+    <div class="column is-three-quarters"
+        [ngClass]="{'is-hidden': true}"
+        *ngFor="let img of images.slice(2)" 
+    >
+        <img [attr.data-src]="img.src" alt="Image not found">    
+    </div>
+
+    <div class="column is-three-quarters is-centered" *ngIf="showLoader">
+      <button class="button is-primary" (click)="loadMore()">Load More</button>
+    </div>
+  </div>
+</main>
+

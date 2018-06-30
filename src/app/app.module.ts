@@ -12,6 +12,7 @@ import {
   HdImageComponent
 } from './__shared/components';
 import { LazyLoaderComponent } from './lazy-loader/lazy-loader.component';
+import { OnDemandLoaderComponent } from './on-demand-loader/on-demand-loader.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { LazyLoaderComponent } from './lazy-loader/lazy-loader.component';
     HeaderComponent,
     HdImageComponent,
     ProgressiveLoaderComponent,
-    LazyLoaderComponent
+    LazyLoaderComponent,
+    OnDemandLoaderComponent
   ],
   imports: [
     BrowserModule,

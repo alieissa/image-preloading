@@ -4,11 +4,29 @@
       <img src="https://bulma.io/images/bulma-logo.png" alt="Bulma: a modern CSS framework based on Flexbox" width="112" height="28">
     </a>
   </div>
-  <div>
-    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a>
+
+  <!-- Burger -->
+  <div class="navbar-burger burger" data-target="navbarMenu" (click)="isMenuActive=!isMenuActive">
+      <span></span>
+      <span></span>
+      <span></span>
+  </div>
+
+  <!-- Menu-->
+  <div id="navbarMenu" class="navbar-menu"
+    [ngClass]="{'is-active': isMenuActive}"
+  >
+    <div id="menu" class="navbar-end">
+      <a [routerLink]="['/']" class="navbar-item">Home</a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a href="" class="navbar-link">Loaders</a>
+        <div class="navbar-dropdown is-boxed">
+            <a [routerLink]="['/on-demand']" class="navbar-item">On Demand</a>
+            <a [routerLink]="['/lazy']" class="navbar-item">Lazy</a>
+            <a [routerLink]="['/progressive']" class="navbar-item">Progressive</a>
+        </div>
+      </div>
+    </div>
   </div>
 </nav>
